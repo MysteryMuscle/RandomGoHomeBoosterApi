@@ -1,20 +1,16 @@
 package org.mystery_muscle.random_gohome_booster.member.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.mystery_muscle.random_gohome_booster.member.entity.Role;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member{
 
     @Id
@@ -29,6 +25,5 @@ public class Member{
     private Role memberRole; // 회원레벨
 
     // TODO : 암호화 작업
-    // memberLevel 은 별도 클래스 만들어 memberRole 로 바꾸는 게 좋은가?
 
 }
