@@ -1,4 +1,4 @@
-package org.mystery_muscle.random_gohome_booster.index.controller;
+package org.mystery_muscle.random_gohome_booster.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
