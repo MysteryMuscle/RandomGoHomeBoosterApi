@@ -17,7 +17,11 @@ public class Deck {
     private Long id;
     private String name;
 
-    @ManyToOne
+    @OneToMany(fetch = FetchType.LAZY
+            , mappedBy = "deck")
+    private List<MemberDeck> memberDeckList = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member owner;
 
