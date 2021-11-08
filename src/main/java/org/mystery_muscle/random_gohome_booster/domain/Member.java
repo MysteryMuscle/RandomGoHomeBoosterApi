@@ -2,6 +2,7 @@ package org.mystery_muscle.random_gohome_booster.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString
 public class Member {
 
     @Id
@@ -29,7 +31,7 @@ public class Member {
     private boolean admin = false; // 관리자 여부
 
     @OneToMany(mappedBy = "member")
-    private List<ApprovedDeck> memberApprovedDecks = new ArrayList<>();
+    private List<MemberDeck> memberDecks = new ArrayList<>();
 
 
 }
