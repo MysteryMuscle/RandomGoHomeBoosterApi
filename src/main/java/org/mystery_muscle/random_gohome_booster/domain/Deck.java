@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -18,6 +20,9 @@ public class Deck {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member owner;
+
+    @OneToMany(mappedBy = "deck_id")
+    private List<Card> card = new ArrayList<>();
 
     private LocalDateTime regDate;
 }
