@@ -7,4 +7,6 @@ public interface MemberService {
     Member insertMember(Member memberDto);
 
     Member login(Login login);
+
+    Member getMember(String loginId);
 }
