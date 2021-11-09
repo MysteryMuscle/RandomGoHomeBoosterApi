@@ -1,7 +1,6 @@
 package org.mystery_muscle.random_gohome_booster.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @EntityListeners(AuditingEntityListener.class)
 public class MemberDeck {
 
@@ -30,4 +28,20 @@ public class MemberDeck {
     @CreatedDate
     private LocalDateTime regDate;
 
+    public static MemberDeck createMemberDeck(Member member, Deck deck){
+        MemberDeck memberDeck = new MemberDeck();
+        memberDeck.setMember(member);
+        memberDeck.setDeck(deck);
+        return memberDeck;
+    }
+
+    private void setDeck(Deck deck) {
+        this.deck=deck;
+        deck.getMemberDeckList().add(this);
+    }
+
+    private void setMember(Member member) {
+        this.member=member;
+        member.getMemberDeckList().add(this);
+    }
 }

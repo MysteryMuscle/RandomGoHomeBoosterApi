@@ -1,6 +1,7 @@
 package org.mystery_muscle.random_gohome_booster.domain;
 
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,13 +16,12 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @EntityListeners(AuditingEntityListener.class)
 public class Card {
 
     @Id
     @GeneratedValue
-    @Column(name="card_id")
+    @Column(name = "card_id")
     private Long id;
 
     private String name;
@@ -30,8 +30,12 @@ public class Card {
     @JoinColumn(name = "deck_id")
     private Deck deck;
 
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
     private List<Item> itemList = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member creator;
 
     @CreatedDate
     private LocalDateTime regDate;
@@ -39,4 +43,26 @@ public class Card {
     @LastModifiedDate
     private LocalDateTime modDate;
 
+    public static Card createCard(Deck deck, Member creator, String name) {
+        Card card = new Card();
+        card.setDeck(deck);
+        card.setCreator(creator);
+        card.setName(name);
+        return card;
+    }
+
+    private void setCreator(Member creator) {
+        this.creator=creator;
+        creator.getOwnedCards().add(this);
+    }
+
+    private void setName(String name) {
+        this.name = name;
+    }
+
+    private void setDeck(Deck deck) {
+        this.deck = deck;
+        deck.getCardList().add(this);
+    }
 }
+

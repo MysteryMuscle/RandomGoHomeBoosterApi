@@ -3,12 +3,16 @@ package org.mystery_muscle.random_gohome_booster.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
+@EntityListeners(AuditingEntityListener.class)
 public class Item {
 
     @Id
@@ -22,4 +26,34 @@ public class Item {
     private String key;
     private String value;
 
+    @ManyToOne
+    @JoinColumn(name="member_id")
+    private Member creator;
+
+    @CreatedDate
+    private LocalDateTime regDate;
+    @LastModifiedDate
+    private LocalDateTime modDate;
+
+    public static Item createItem(Card card, Member creator, String key, String value){
+        Item item = new Item();
+        item.setCard(card);
+        item.setKeyAndValue(key,value);
+        item.setCreator(creator);
+        return item;
+    }
+
+    private void setCreator(Member creator) {
+        this.creator=creator;
+    }
+
+    private void setKeyAndValue(String key, String value) {
+        this.key=key;
+        this.value=value;
+    }
+
+    private void setCard(Card card) {
+        this.card=card;
+        card.getItemList().add(this);
+    }
 }
