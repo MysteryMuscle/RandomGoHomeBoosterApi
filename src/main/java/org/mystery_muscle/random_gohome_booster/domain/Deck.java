@@ -17,15 +17,14 @@ public class Deck {
     private Long id;
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY
-            , mappedBy = "deck")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deck")
     private List<MemberDeck> memberDeckList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member owner;
 
-    @OneToMany(mappedBy = "deck_id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "deck")
     private List<Card> card = new ArrayList<>();
 
     private LocalDateTime regDate;
