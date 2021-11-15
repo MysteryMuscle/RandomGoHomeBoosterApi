@@ -1,3 +1,9 @@
+buildscript {
+	ext{
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.5.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -7,6 +13,7 @@ plugins {
 group = 'org.mystery_muscle'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+
 
 configurations {
 	developmentOnly
@@ -38,6 +45,13 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+// QueryDSL
+	implementation ("com.querydsl:querydsl-jpa:${queryDslVersion}")
+	annotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+	testImplementation ("com.querydsl:querydsl-jpa:${queryDslVersion}")
+	testAnnotationProcessor ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+
 }
 
 test {
