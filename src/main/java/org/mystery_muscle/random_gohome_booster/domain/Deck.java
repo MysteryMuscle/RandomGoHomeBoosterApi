@@ -21,6 +21,7 @@ public class Deck {
     @Column(name = "deck_id")
     private Long id;
     private String name;
+    private String description;
 
     @OneToMany(fetch = FetchType.LAZY,
             mappedBy = "deck",
@@ -42,7 +43,7 @@ public class Deck {
 
 
     // 생성 메소드
-    public static Deck createDeck(Member member, String name){
+    public static Deck createDeck(Member member, String name, String description) {
         Deck deck = new Deck();
         deck.setOwner(member);
         deck.setName(name);
@@ -57,5 +58,13 @@ public class Deck {
 
     private void setName(String name) {
         this.name=name;
+    }
+
+
+    // 덱 정보를 수정하는 메소드
+    public void changeDeckInfo(String deckName, String deckDescription) {
+        this.name = deckName;
+        this.description = deckDescription;
+        this.modDate = LocalDateTime.now();
     }
 }
