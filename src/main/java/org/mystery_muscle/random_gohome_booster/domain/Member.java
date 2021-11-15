@@ -38,15 +38,19 @@ public class Member {
 
     private boolean admin = false; // 관리자 여부
 
+    // 승인된 덱 목록
     @OneToMany(mappedBy = "member")
     private List<MemberDeck> memberDeckList = new ArrayList<>();
 
+    // 생성한 덱 목록
     @OneToMany(mappedBy = "owner")
     private List<Deck> OwnedDecks = new ArrayList<>();
 
+    // 생성한 카드 목록
     @OneToMany(mappedBy = "creator")
     private List<Card> OwnedCards = new ArrayList<>();
 
+    // 생성한 아이템 목록
     @OneToMany(mappedBy = "creator")
     private List<Item> OwnedItems = new ArrayList<>();
 
