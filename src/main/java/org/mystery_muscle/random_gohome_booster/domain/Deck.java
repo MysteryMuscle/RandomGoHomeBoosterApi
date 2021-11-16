@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -63,8 +64,12 @@ public class Deck {
 
     // 덱 정보를 수정하는 메소드
     public void changeDeckInfo(String deckName, String deckDescription) {
-        this.name = deckName;
-        this.description = deckDescription;
+        if(StringUtils.hasText(deckName)) {
+            this.name = deckName;
+        }
+        if(StringUtils.hasText(deckDescription)) {
+            this.description = deckDescription;
+        }
         this.modDate = LocalDateTime.now();
     }
 }

@@ -4,10 +4,12 @@ import org.mystery_muscle.random_gohome_booster.domain.Deck;
 import org.mystery_muscle.random_gohome_booster.repository.DeckRepository;
 import org.mystery_muscle.random_gohome_booster.service.DeckService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class DeckServiceImpl implements DeckService {
 
     private final DeckRepository deckRepository;
@@ -23,16 +25,17 @@ public class DeckServiceImpl implements DeckService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Deck getDeck(Long deckId) {
         Deck deck = deckRepository.findById(deckId).orElse(null);
         return deck;
     }
 
     @Override
-    public Deck updateDeck(Long deckId, String deckName, String deckDescription) {
-        Deck deck = deckRepository.findById(deckId).orElse(null);
-        deck.changeDeckInfo(deckName, deckDescription);
-        return deck;
+    public Deck updateDeck(Deck deck) {
+        Deck fromDB = deckRepository.findById(deck.getId()).orElse(null);
+        fromDB.changeDeckInfo(deck.getName(), deck.getDescription());
+        return fromDB;
     }
 
 
@@ -42,18 +45,21 @@ public class DeckServiceImpl implements DeckService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Deck getDeckByName(String deckName) {
         Deck deck = deckRepository.findByName(deckName);
         return deck;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Deck> getDecksByOwner(Long userId) {
-        List<Deck> decks = deckRepository.findAllByOwner(userId);
+        List<Deck> decks = deckRepository.findByOwnerId(userId);
         return decks;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Deck> getAllDecks() {
         return deckRepository.findAll();
     }

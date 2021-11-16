@@ -10,7 +10,7 @@ public interface DeckService {
 
     public Deck getDeck(Long deckId);
 
-    public Deck updateDeck(Long deckId, String deckName, String deckDescription);
+    public Deck updateDeck(Deck deck);
 
     public void deleteDeck(Long deckId);
 
@@ -19,6 +19,5 @@ public interface DeckService {
     public List<Deck> getDecksByOwner(Long userId);
 
     public List<Deck> getAllDecks();
-
 
 }
