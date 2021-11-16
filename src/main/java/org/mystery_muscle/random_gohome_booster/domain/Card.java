@@ -64,5 +64,10 @@ public class Card {
         this.deck = deck;
         deck.getCardList().add(this);
     }
+
+    public void editCard(String name) {
+        this.name = name;
+        this.modDate = LocalDateTime.now();
+    }
 }
 
