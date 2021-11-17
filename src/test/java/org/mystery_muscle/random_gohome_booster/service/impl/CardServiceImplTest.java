@@ -70,25 +70,116 @@ class CardServiceImplTest {
 
     @Test
     void updateCard() {
+        // given
+        Member member = memberService.getMember("test");
+        List<Deck> decks = deckService.getAllDecks();
+
+        //random deck in the decks
+        Deck deck = decks.get((int) (Math.random() * decks.size()));
+
+        Card card = Card.createCard(deck, member, "test");
+        card = cardService.insertCard(card);
+
+        // when
+        card.editCard("test2");
+
+        // then
+        assertTrue(cardService.getCard(card.getId()).getName().equals("test2"));
+
     }
 
     @Test
     void deleteCard() {
+        // given
+        Member member = memberService.getMember("test");
+        List<Deck> decks = deckService.getAllDecks();
+
+        //random deck in the decks
+        Deck deck = decks.get((int) (Math.random() * decks.size()));
+
+        Card card = Card.createCard(deck, member, "test");
+        card = cardService.insertCard(card);
+
+        // when
+        cardService.deleteCard(card.getId());
+
+        // then
+        assertTrue(cardService.getCard(card.getId()) == null);
     }
 
     @Test
     void getCard() {
+        // given
+        Member member = memberService.getMember("test");
+        List<Deck> decks = deckService.getAllDecks();
+
+        //random deck in the decks
+        Deck deck = decks.get((int) (Math.random() * decks.size()));
+
+        Card card = Card.createCard(deck, member, "test");
+        card = cardService.insertCard(card);
+
+        // when
+        Card card2 = cardService.getCard(card.getId());
+
+        // then
+        assertTrue(card2.getName().equals(card.getName()));
     }
 
     @Test
     void getAllCards() {
+        // given
+        Member member = memberService.getMember("test");
+        List<Deck> decks = deckService.getAllDecks();
+
+        //random deck in the decks
+        Deck deck = decks.get((int) (Math.random() * decks.size()));
+
+        Card card = Card.createCard(deck, member, "test");
+        card = cardService.insertCard(card);
+
+        // when
+        List<Card> cards = cardService.getAllCards();
+
+        // then
+        assertTrue(cards.size() > 0);
     }
 
     @Test
     void getCardsByCreatorId() {
+        // given
+        Member member = memberService.getMember("test");
+        List<Deck> decks = deckService.getAllDecks();
+
+        //random deck in the decks
+        Deck deck = decks.get((int) (Math.random() * decks.size()));
+
+        Card card = Card.createCard(deck, member, "test");
+        card = cardService.insertCard(card);
+
+        // when
+        List<Card> cards = cardService.getCardsByCreatorId(member.getId());
+
+        // then
+        assertTrue(cards.size() > 0);
     }
 
     @Test
     void getCardsByDeckId() {
+        // given
+        Member member = memberService.getMember("test");
+        List<Deck> decks = deckService.getAllDecks();
+
+        //random deck in the decks
+        Deck deck = decks.get((int) (Math.random() * decks.size()));
+
+        Card card = Card.createCard(deck, member, "test");
+        card = cardService.insertCard(card);
+
+        // when
+        List<Card> cards = cardService.getCardsByDeckId(deck.getId());
+
+        // then
+        assertTrue(cards.size() > 0);
     }
 }
