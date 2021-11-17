@@ -3,6 +3,7 @@ package org.mystery_muscle.random_gohome_booster.service.impl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mystery_muscle.random_gohome_booster.domain.Member;
+import org.mystery_muscle.random_gohome_booster.dto.Login;
 import org.mystery_muscle.random_gohome_booster.repository.MemberRepository;
 import org.mystery_muscle.random_gohome_booster.service.MemberService;
 import org.slf4j.Logger;
@@ -35,11 +36,13 @@ public class MemberServiceImplTest {
     public void MemberJoinTest(){
         // given
         Member member = new Member();
-        member.setName("test");
+        member.setName("name");
+        member.setLoginId("id");
+        member.setPassword("password");
 
         // when
-        member = memberRepository.save(member);
-        Member findMember = memberRepository.findById(member.getId()).get();
+        member = memberService.insertMember(member);
+        Member findMember = memberService.getMember(member.getLoginId());
 
         // then
         assertEquals(member, findMember);
@@ -49,11 +52,13 @@ public class MemberServiceImplTest {
     public void MemberDuplicateExceptionTest() throws IllegalStateException{
         // given
         Member member = new Member();
+        member.setLoginId("loginid1");
         member.setName("test name1");
         member.setEmail("test@mail.com");
         member.setPassword(UUID.randomUUID().toString());
 
         Member duplicate = new Member();
+        duplicate.setLoginId("loginid2");
         duplicate.setName("test name2");
         duplicate.setEmail("test@mail.com");
         duplicate.setPassword(UUID.randomUUID().toString());
@@ -68,5 +73,32 @@ public class MemberServiceImplTest {
         if(exception == null || exception.getClass() != IllegalStateException.class){
             fail("this test is failed!");
         }
+    }
+
+    @Test
+    void login() {
+        // given
+        String loginId = "loginid1";
+        String password = "password1";
+
+        Member member = new Member();
+        member.setLoginId(loginId);
+        member.setPassword(password);
+        member = memberService.insertMember(member);
+
+        // when
+        Login login = new Login();
+        login.setLoginId(loginId);
+        login.setPassword(password);
+
+        Member loginMember = memberService.login(login);
+
+        // then
+        assertEquals(member, loginMember);
+
+    }
+
+    @Test
+    void getMember() {
     }
 }
