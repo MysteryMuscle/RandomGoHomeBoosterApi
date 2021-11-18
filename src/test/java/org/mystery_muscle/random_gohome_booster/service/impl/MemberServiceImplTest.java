@@ -100,5 +100,19 @@ public class MemberServiceImplTest {
 
     @Test
     void getMember() {
+        // given
+        String loginId = "loginid1";
+        String password = "password1";
+
+        Member member = new Member();
+        member.setLoginId(loginId);
+        member.setPassword(password);
+        member = memberService.insertMember(member);
+
+        // when
+        Member findMember = memberService.getMember(loginId);
+
+        // then
+        assertEquals(member, findMember);
     }
 }
