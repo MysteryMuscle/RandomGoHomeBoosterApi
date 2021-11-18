@@ -47,7 +47,7 @@ public class Item {
         this.creator=creator;
     }
 
-    private void setKeyAndValue(String key, String value) {
+    public void setKeyAndValue(String key, String value) {
         this.key=key;
         this.value=value;
     }
