@@ -1,5 +1,6 @@
 package org.mystery_muscle.random_gohome_booster.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mystery_muscle.random_gohome_booster.annotation.CurrentUser;
 import org.mystery_muscle.random_gohome_booster.domain.Member;
 import org.mystery_muscle.random_gohome_booster.exception.MMException;
@@ -12,6 +13,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 public class CustomHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -26,8 +28,9 @@ public class CustomHandlerMethodArgumentResolver implements HandlerMethodArgumen
         if (parameter.getParameterType().equals(Member.class)) {
             if (parameter.getParameterAnnotation(CurrentUser.class) != null) {
                 if (request.getSession().getAttribute("currentUser") != null) {
-                    return (Member) request.getAttribute("currentUser");
+                    return (Member)  request.getSession().getAttribute("currentUser");
                 } else {
+                    log.info("CurrentUser is null");
                     return null;
                 }
             }
