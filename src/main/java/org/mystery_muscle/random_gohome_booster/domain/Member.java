@@ -15,8 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
-@EntityListeners(AuditingEntityListener.class)
+ @EntityListeners(AuditingEntityListener.class)
 public class Member {
 
     @Id
