@@ -3,6 +3,8 @@ package org.mystery_muscle.random_gohome_booster.service.impl;
 import org.mystery_muscle.random_gohome_booster.domain.Deck;
 import org.mystery_muscle.random_gohome_booster.repository.DeckRepository;
 import org.mystery_muscle.random_gohome_booster.service.DeckService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,5 +64,10 @@ public class DeckServiceImpl implements DeckService {
     @Transactional(readOnly = true)
     public List<Deck> getAllDecks() {
         return deckRepository.findAll();
+    }
+
+    @Override
+    public Page<Deck> getAllDecksPages(int page, int size) {
+        return deckRepository.findAll(PageRequest.of(page, size));
     }
 }

@@ -1,6 +1,7 @@
 package org.mystery_muscle.random_gohome_booster.service;
 
 import org.mystery_muscle.random_gohome_booster.domain.Deck;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public interface DeckService {
     public List<Deck> getDecksByOwner(Long userId);
 
     public List<Deck> getAllDecks();
+
+    public Page<Deck> getAllDecksPages(int page, int size);
 
 }
