@@ -9,6 +9,11 @@
 <p>
     Hello!,
 </p>
-<p th:text="${currentUser.name}"></p>
+<p>
+    You are logged in as <strong th:text="${currentUser.name}"></strong>
+</p>
+
+<p><a href="" th:href="@{/admin/deck/list}">deck list</a></p>
+
 </body>
 </html>
