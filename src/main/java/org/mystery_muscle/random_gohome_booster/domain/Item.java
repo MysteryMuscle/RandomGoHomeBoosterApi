@@ -2,7 +2,6 @@ package org.mystery_muscle.random_gohome_booster.domain;
 
 
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,8 +22,8 @@ public class Item {
     @JoinColumn(name="card_id")
     private Card card;
 
-    private String key;
-    private String value;
+    private String keyName;
+    private String keyValue;
 
     @ManyToOne
     @JoinColumn(name="member_id")
@@ -48,8 +47,8 @@ public class Item {
     }
 
     public void setKeyAndValue(String key, String value) {
-        this.key=key;
-        this.value=value;
+        this.keyName =key;
+        this.keyValue =value;
     }
 
     private void setCard(Card card) {
