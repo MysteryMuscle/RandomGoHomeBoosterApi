@@ -42,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
         Item fromDB = itemRepository.findById(item.getId()).orElse(null);
         // update item
         if(fromDB != null) {
-            fromDB.setKeyAndValue(item.getKey(), item.getValue());
+             fromDB.setKeyAndValue(item.getKeyName(), item.getKeyValue());
         }
     }
 }
