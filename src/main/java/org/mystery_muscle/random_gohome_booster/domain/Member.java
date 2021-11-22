@@ -22,7 +22,7 @@ public class Member {
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
-    @Column(name = "member_login_id", unique = true)
+    @Column(name = "member_login_id", unique = true, length = 20)
     private String loginId; // 회원 아이디
     private String password; // 회원비밀번호
 
