@@ -48,6 +48,7 @@ public class Deck {
         Deck deck = new Deck();
         deck.setOwner(member);
         deck.setName(name);
+        deck.setDescription(description);
         return deck;
     }
 
@@ -59,6 +60,10 @@ public class Deck {
 
     private void setName(String name) {
         this.name=name;
+    }
+
+    private void setDescription(String description) {
+        this.description=description;
     }
 
 
