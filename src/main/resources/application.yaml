@@ -1,7 +1,8 @@
-spring:
-  devtools:
-    livereload:
-      enabled: true
 logging:
   level:
     root: info
+
+spring:
+  profiles:
+    active: dev
+
