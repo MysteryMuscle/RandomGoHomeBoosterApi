@@ -1,0 +1,25 @@
+spring:
+  devtools:
+    livereload:
+      enabled: true
+  jpa:
+    database: mysql
+    show-sql: true
+    database-name: rgbooster
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/rgbooster
+    username: username
+    password: password
+    validation-query: SELECT 1
+
+
+logging:
+  level:
+    root: info
