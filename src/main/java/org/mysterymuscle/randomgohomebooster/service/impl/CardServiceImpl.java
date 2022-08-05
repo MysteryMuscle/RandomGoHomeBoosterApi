@@ -60,6 +60,6 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<Card> getCardsByDeckId(Long deckId) {
-        return cardRepository.findAllbyDeckId(deckId);
+        return cardRepository.findAllByDeckId(deckId);
     }
 }

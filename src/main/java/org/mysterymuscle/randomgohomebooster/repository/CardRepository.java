@@ -15,5 +15,5 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findAllByCreatorId(Long creatorId);
 
     @Query("select c from Card c inner join c.deck d where c.deck.id = :deckId")
-    List<Card> findAllbyDeckId(@Param("deckId") Long deckId);
+    List<Card> findAllByDeckId(@Param("deckId") Long deckId);
 }
