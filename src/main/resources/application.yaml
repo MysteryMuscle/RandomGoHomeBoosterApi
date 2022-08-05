@@ -3,6 +3,7 @@ logging:
     root: info
 
 spring:
-  profiles:
-    active: dev
+  config:
+    activate:
+      on-profile: local
 
