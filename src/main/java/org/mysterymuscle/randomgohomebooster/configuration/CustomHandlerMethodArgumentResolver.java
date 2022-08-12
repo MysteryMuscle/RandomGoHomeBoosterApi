@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mysterymuscle.randomgohomebooster.annotation.CurrentUser;
 import org.mysterymuscle.randomgohomebooster.domain.Member;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -24,14 +25,11 @@ public class CustomHandlerMethodArgumentResolver implements HandlerMethodArgumen
 
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
-        if (parameter.getParameterType().equals(Member.class)) {
+        if (parameter.getParameterType().equals(String.class)) {
             if (parameter.getParameterAnnotation(CurrentUser.class) != null) {
-                if (request.getSession().getAttribute("currentUser") != null) {
-                    return (Member)  request.getSession().getAttribute("currentUser");
-                } else {
-                    log.info("CurrentUser is null");
-                    return null;
-                }
+                String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+                log.info("userId : {}", userId);
+                return userId;
             }
         }
         return WebArgumentResolver.UNRESOLVED;

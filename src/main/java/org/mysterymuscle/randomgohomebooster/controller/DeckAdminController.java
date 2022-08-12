@@ -28,33 +28,5 @@ public class DeckAdminController {
     private final DeckService deckService;
     private final MemberService memberService;
 
-    @RequestMapping(value = "/list")
-    public String deckListGet(@PageableDefault Pageable pageable, Model model) {
-        Page<Deck> decks = deckService.getAllDecksPages(pageable.getPageNumber(), pageable.getPageSize());
-        model.addAttribute("page", decks);
-        int totalPages = decks.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-        return "/admin/deck/list";
-
-    }
-
-    @RequestMapping(value = "/form", method = RequestMethod.GET)
-    public String deckFormGet(@ModelAttribute DeckDto deckDto, Model model) {
-        model.addAttribute("deckDto", deckDto);
-        return "/admin/deck/form";
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public String deckFormPost(@CurrentUser Member currentUser, @ModelAttribute DeckDto deckDto) {
-        Member owner = memberService.getMember(currentUser.getLoginId());
-        Deck deck = Deck.createDeck(owner, deckDto.getName(), deckDto.getDescription());
-        deck = deckService.insertDeck(deck);
-        return "redirect:/admin/deck/list";
-    }
 
 }
