@@ -1,20 +1,26 @@
 package org.mysterymuscle.randomgohomebooster.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@Setter
- @EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
@@ -37,28 +43,37 @@ public class Member {
     private boolean admin = false; // 관리자 여부
 
     // 승인된 덱 목록
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<MemberDeck> memberDeckList = new ArrayList<>();
 
     // 생성한 덱 목록
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<Deck> OwnedDecks = new ArrayList<>();
 
     // 생성한 카드 목록
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
     private List<Card> OwnedCards = new ArrayList<>();
 
     // 생성한 아이템 목록
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
     private List<Item> OwnedItems = new ArrayList<>();
 
-    public static Member createMember(String loginId, String password, String name, String email){
-        Member member = new Member();
-        member.setLoginId(loginId);
-        member.setPassword(password);
-        member.setName(name);
-        member.setEmail(email);
-        return member;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
+    public Member(String loginId, String password, String name, String email) {
+        this.loginId = loginId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.roles.add("ROLE_USER");
     }
 
+    public static Member createMember(String loginId, String password, String name, String email){
+        return new Member(loginId, password, name, email);
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
 }
