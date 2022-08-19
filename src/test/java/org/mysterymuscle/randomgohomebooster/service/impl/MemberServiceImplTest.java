@@ -1,9 +1,11 @@
 package org.mysterymuscle.randomgohomebooster.service.impl;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mysterymuscle.randomgohomebooster.domain.Member;
 import org.mysterymuscle.randomgohomebooster.dto.Login;
+import org.mysterymuscle.randomgohomebooster.dto.LoginResponse;
 import org.mysterymuscle.randomgohomebooster.repository.MemberRepository;
 import org.mysterymuscle.randomgohomebooster.service.MemberService;
 import org.slf4j.Logger;
@@ -34,10 +36,7 @@ public class MemberServiceImplTest {
     @Test
     public void MemberJoinTest(){
         // given
-        Member member = new Member();
-        member.setName("name");
-        member.setLoginId("id");
-        member.setPassword("password");
+        Member member = getMemberEntity();
 
         // when
         member = memberService.insertMember(member);
@@ -47,19 +46,31 @@ public class MemberServiceImplTest {
         assertEquals(member, findMember);
     }
 
+    private Member getMemberEntity() {
+        return Member.createMember(
+                "name"
+                , "password"
+                , "name"
+                , "test@email.com"
+        );
+    }
+
+    private Member getMemberDuplicateEntity() {
+        return Member.createMember(
+                "name2"
+                , "password2"
+                , "name2"
+                , "test@email.com"
+        );
+    }
+
     @Test()
     public void MemberDuplicateExceptionTest() throws IllegalStateException{
         // given
-        Member member = new Member();
-        member.setLoginId("loginid1");
-        member.setName("test name1");
-        member.setEmail("test@mail.com");
+        Member member = getMemberEntity();
         member.setPassword(UUID.randomUUID().toString());
 
-        Member duplicate = new Member();
-        duplicate.setLoginId("loginid2");
-        duplicate.setName("test name2");
-        duplicate.setEmail("test@mail.com");
+        Member duplicate = getMemberDuplicateEntity();
         duplicate.setPassword(UUID.randomUUID().toString());
 
         // when
@@ -77,12 +88,11 @@ public class MemberServiceImplTest {
     @Test
     void login() {
         // given
-        String loginId = "loginid1";
-        String password = "password1";
+        Member member = getMemberEntity();
 
-        Member member = new Member();
-        member.setLoginId(loginId);
-        member.setPassword(password);
+        String loginId = member.getLoginId();
+        String password = member.getPassword();
+
         member = memberService.insertMember(member);
 
         // when
@@ -90,26 +100,21 @@ public class MemberServiceImplTest {
         login.setLoginId(loginId);
         login.setPassword(password);
 
-        Member loginMember = memberService.login(login);
+        LoginResponse loginMember = memberService.login(login);
 
         // then
-        assertEquals(member, loginMember);
 
     }
 
     @Test
     void getMember() {
         // given
-        String loginId = "loginid1";
-        String password = "password1";
 
-        Member member = new Member();
-        member.setLoginId(loginId);
-        member.setPassword(password);
+        Member member = getMemberEntity();
         member = memberService.insertMember(member);
 
         // when
-        Member findMember = memberService.getMember(loginId);
+        Member findMember = memberService.getMember(member.getLoginId());
 
         // then
         assertEquals(member, findMember);

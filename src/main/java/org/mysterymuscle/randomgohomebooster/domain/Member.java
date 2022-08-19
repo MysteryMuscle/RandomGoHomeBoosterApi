@@ -76,4 +76,14 @@ public class Member {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
+
+    public void setAdmin(boolean b) {
+        if(!this.roles.contains("ROLE_ADMIN")){
+            this.roles.add("ROLE_ADMIN");
+        }
+    }
+
+    public void setPassword(String encode) {
+        this.password = encode;
+    }
 }
