@@ -8,6 +8,7 @@ plugins {
 	id 'org.springframework.boot' version '2.5.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'org.mystery_muscle'
@@ -27,6 +28,36 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+
+bootRun {
+	environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "dev"
+}
+
+test {
+	environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "local"
+	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport{
+
+	reports {
+		html.required = true
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0
+			}
+
+			failOnViolation true
+		}
+	}
 }
 
 dependencies {
@@ -66,9 +97,4 @@ sourceSets {
 			srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
 		}
 	}
-}
-
-test {
-	useJUnitPlatform()
-
 }
