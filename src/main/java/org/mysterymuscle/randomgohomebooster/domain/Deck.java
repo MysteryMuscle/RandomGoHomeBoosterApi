@@ -54,7 +54,6 @@ public class Deck {
     // 연관관계 메소드
     private void setOwner(Member member) {
         this.owner=member;
-        member.getOwnedDecks().add(this);
     }
 
     private void setName(String name) {

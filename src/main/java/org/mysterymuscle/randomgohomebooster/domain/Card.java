@@ -51,7 +51,6 @@ public class Card {
 
     private void setCreator(Member creator) {
         this.creator=creator;
-        creator.getOwnedCards().add(this);
     }
 
     private void setName(String name) {

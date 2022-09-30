@@ -26,9 +26,9 @@ public class MemberUserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public LoginResponse login(@RequestBody Login login) {
-        Member member = memberService.login(login);
 
-        return new LoginResponse(member);
+
+        return memberService.login(login);
     }
 
 }

@@ -8,8 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.mysterymuscle.randomgohomebooster.domain.Member;
 import org.mysterymuscle.randomgohomebooster.service.MemberService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 
@@ -17,20 +20,20 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
 
     private final long tokenValidityInMilliseconds = 1000L * 60L * 60L;
-    private final MemberService memberService;
-    @Value("${spring.jwt.secret}")
-    private String secretKey;
+    private final UserDetailsService userDetailsService;
+    // @Value("${jwt.secret}")
+    private String secretKey = "secret";
 
     // create Jwt Token
-    public String createToken(String userId, List<String> roles) {
+    public String createToken(String userId, Collection<String> roles) {
         return Jwts.builder()
                 .setSubject(userId)
                 .setIssuedAt(new Date())
@@ -42,8 +45,8 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         String userId = getUserId(token);
-        Member member = memberService.getMember(userId);
-        return new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     public String resolveToken(HttpServletRequest request) {

@@ -6,5 +6,6 @@ spring:
   config:
     activate:
       on-profile: local
-  jwt:
-    secret: secret
+
+jwt:
+  secret: secret

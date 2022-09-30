@@ -9,19 +9,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -42,24 +41,8 @@ public class Member {
 
     private boolean admin = false; // 관리자 여부
 
-    // 승인된 덱 목록
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<MemberDeck> memberDeckList = new ArrayList<>();
-
-    // 생성한 덱 목록
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-    private List<Deck> OwnedDecks = new ArrayList<>();
-
-    // 생성한 카드 목록
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
-    private List<Card> OwnedCards = new ArrayList<>();
-
-    // 생성한 아이템 목록
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
-    private List<Item> OwnedItems = new ArrayList<>();
-
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    private Set<String> roles = new HashSet<>();
 
     public Member(String loginId, String password, String name, String email) {
         this.loginId = loginId;
@@ -75,6 +58,31 @@ public class Member {
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return this.loginId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setAdmin(boolean b) {
