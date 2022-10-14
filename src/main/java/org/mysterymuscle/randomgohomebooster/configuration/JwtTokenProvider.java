@@ -29,8 +29,8 @@ public class JwtTokenProvider {
 
     private final long tokenValidityInMilliseconds = 1000L * 60L * 60L;
     private final UserDetailsService userDetailsService;
-    // @Value("${jwt.secret}")
-    private String secretKey = "secret";
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     // create Jwt Token
     public String createToken(String userId, Collection<String> roles) {
@@ -68,7 +68,7 @@ public class JwtTokenProvider {
     }
 
     private Key getSecretKey() {
-        byte[] keyBytes = Base64Utils.decodeFromString(secretKey);
+        byte[] keyBytes = Base64Utils.decodeFromUrlSafeString(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

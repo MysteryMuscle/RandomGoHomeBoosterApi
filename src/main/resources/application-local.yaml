@@ -7,3 +7,6 @@ spring:
 logging:
   level:
     root: info
+
+jwt:
+  secret: so-get-away-another-way-to-feel-what-you-didnt-want-yourself-to-know-and-let-yourself-go

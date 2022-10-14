@@ -6,6 +6,8 @@ import org.mysterymuscle.randomgohomebooster.configuration.JwtTokenProvider;
 import org.mysterymuscle.randomgohomebooster.domain.Member;
 import org.mysterymuscle.randomgohomebooster.dto.Login;
 import org.mysterymuscle.randomgohomebooster.dto.LoginResponse;
+import org.mysterymuscle.randomgohomebooster.dto.MemberDto;
+import org.mysterymuscle.randomgohomebooster.dto.MemberSignUpRequest;
 import org.mysterymuscle.randomgohomebooster.repository.MemberRepository;
 import org.mysterymuscle.randomgohomebooster.service.MemberService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,17 +43,24 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+
+    @Override
+    public MemberDto insertMember(MemberSignUpRequest memberSignUpRequest) {
+        Member member = Member.createMember(memberSignUpRequest);
+        return MemberDto.from(insertMember(member));
+    }
+
     @Override
     @Transactional(readOnly = true)
     public LoginResponse login(Login login) {
         Optional<Member> fromDB = memberRepository.findByLoginId(login.getLoginId());
-        if (!fromDB.isPresent()) {
-            log.debug("No loginId Matches");
+        if (fromDB.isEmpty()) {
+            log.info("No loginId Matches");
             return null;
         }
 
         if (!passwordEncoder.matches(login.getPassword(), fromDB.get().getPassword())) {
-            log.debug("Password Unmatched");
+            log.info("Password Unmatched");
             return null;
         }
         String token = jwtTokenProvider.createToken(fromDB.get().getLoginId(), fromDB.get().getRoles());
@@ -71,4 +80,5 @@ public class MemberServiceImpl implements MemberService {
 
         return fromDB.get();
     }
+
 }

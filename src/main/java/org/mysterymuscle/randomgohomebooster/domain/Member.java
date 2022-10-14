@@ -3,7 +3,7 @@ package org.mysterymuscle.randomgohomebooster.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.mysterymuscle.randomgohomebooster.dto.MemberSignUpRequest;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -49,11 +49,17 @@ public class Member implements UserDetails {
         this.password = password;
         this.name = name;
         this.email = email;
+        this.regDate = LocalDateTime.now();
+        this.modDate = LocalDateTime.now();
         this.roles.add("ROLE_USER");
     }
 
     public static Member createMember(String loginId, String password, String name, String email){
         return new Member(loginId, password, name, email);
+    }
+
+    public static Member createMember(MemberSignUpRequest memberSignUpRequest) {
+        return new Member(memberSignUpRequest.getLoginId(), memberSignUpRequest.getPassword(), memberSignUpRequest.getName(), memberSignUpRequest.getEmail());
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {

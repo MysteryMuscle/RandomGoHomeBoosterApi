@@ -3,9 +3,8 @@ logging:
     root: info
 
 spring:
-  config:
-    activate:
-      on-profile: local
+  profiles:
+    active: local
 
 jwt:
-  secret: secret
+  secret: random-go-booster-secret-key
